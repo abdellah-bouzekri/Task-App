@@ -10,7 +10,7 @@ function SearchBar() {
       <input
         value={search}
         type="text"
-        placeholder="Search task name..."
+        placeholder="Search task name or Category ...."
         className="flex-1 outline-none border-none bg-transparent text-gray-800 placeholder-gray-400"
         onChange={(e) => setSearch(e.target.value)}
       />

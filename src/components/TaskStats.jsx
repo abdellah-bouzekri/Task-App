@@ -3,10 +3,12 @@ import { TaskContext } from "../context/TaskContext";
 import { ListTodo, Flame, CheckCircle2 } from "lucide-react";
 
 function TaskStats() {
-  const { task } = useContext(TaskContext);
-  const total = task.length;
-  const highPriorityTask = task.filter((t) => t.Priority === "High").length;
-  const completed = task.filter((t) => t.completed).length;
+  const { tasks } = useContext(TaskContext);
+  const total = tasks.length;
+  const highPriorityTask = tasks.filter(
+    (task) => task.Priority === "High"
+  ).length;
+  const completed = tasks.filter((task) => task.completed).length;
 
   return (
     <div className="bg-white p-12 rounded-2xl shadow-md w-full max-w-sm mx-auto space-y-4 text-gray-800">

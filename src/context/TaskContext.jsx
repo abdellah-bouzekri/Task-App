@@ -1,17 +1,24 @@
 import { useEffect } from "react";
 import { createContext } from "react";
 import { useState } from "react";
-const tasks = [
-  { id: 1, taskname: "Fix login bug", Priority: "High" },
-  { id: 2, taskname: "Update landing page UI", Priority: "Medium" },
-  { id: 3, taskname: "Write unit tests", Priority: "Low" },
-  { id: 4, taskname: "Optimize images", Priority: "Medium" },
+const Tasks = [
+  { id: 1, taskname: "Fix login bug", Priority: "High", category: "Work" },
+  {
+    id: 2,
+    taskname: "Update landing page UI",
+    Priority: "Medium",
+    category: "Chill",
+  },
+  { id: 3, taskname: "Write unit tests", Priority: "Low", category: "Work" },
 ];
 export const TaskContext = createContext();
 function TaskProvider({ children }) {
-  const [task, setTask] = useState(tasks);
+  const [tasks, setTasks] = useState(Tasks);
   const [search, setSearch] = useState("");
+  const [msg, setMsg] = useState("");
   const [dark, setDark] = useState(false);
+  const [editingTask, setEditingTask] = useState(null);
+
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme) {
@@ -30,30 +37,42 @@ function TaskProvider({ children }) {
   };
   // Toggle completed state of task by id
   const toggleComplete = (id) => {
-    setTask((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t))
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.id === id ? { ...task, completed: !task.completed } : task
+      )
     );
   };
   // Delete task by id
   const DeleteTask = (id) => {
-    setTask((perv) => perv.filter((t) => t.id !== id));
+    setTasks((perv) => perv.filter((task) => task.id !== id));
   };
   // Add new task
   const addTask = (newTask) => {
-    setTask((prev) => [...prev, newTask]);
+    setTasks((prev) => [...prev, newTask]);
+  };
+  const updateTask = (updatedTask) => {
+    setTasks((perv) =>
+      perv.map((task) => (task.id === updatedTask.id ? updatedTask : task))
+    );
   };
   return (
     <TaskContext.Provider
       value={{
-        task,
+        tasks,
         setSearch,
         search,
-        setTask,
+        setTasks,
         toggleComplete,
         DeleteTask,
         addTask,
         dark,
         handleToggle,
+        editingTask,
+        setEditingTask,
+        updateTask,
+        setMsg,
+        msg,
       }}>
       {children}
     </TaskContext.Provider>
